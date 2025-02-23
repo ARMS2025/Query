@@ -16,17 +16,17 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.openqa.selenium.remote.CapabilityType.PLATFORM_NAME;
 
-public class AssignDriverObjectTest {
+public class SecondAssignDriverObjectTest {
     private static final RemoteWebDriver MOCKED_CHROME_DRIVER = mock(ChromeDriver.class);
     private static final AppiumDriver MOCKED_APPIUM_DRIVER = mock(AppiumDriver.class);
 
     private Query valid;
     private Query empty;
 
-    public AssignDriverObjectTest() {
+    public SecondAssignDriverObjectTest() {
         Capabilities mockedRemoteWebDriverCapabilities = mock(Capabilities.class);
         when(mockedRemoteWebDriverCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedRemoteWebDriverCapabilities.getCapability(PLATFORM_NAME)).thenReturn(Platform.YOSEMITE);
+        when(mockedRemoteWebDriverCapabilities.getCapability("automationName")).thenReturn(null);
         when(MOCKED_CHROME_DRIVER.getCapabilities()).thenReturn(mockedRemoteWebDriverCapabilities);
 
         Capabilities mockedAppiumDriverCapabilities = mock(Capabilities.class);
@@ -37,15 +37,28 @@ public class AssignDriverObjectTest {
     }
 
     @Test
-    public void assignAppiumDriver() {
-        valid = new Query().defaultLocator(By.id("bar"));
+    public void assignRemoteWebDriver() {
+        valid = new Query().defaultLocator(By.id("foo"));
         empty = null;
 
         assertThat(valid.driverIsSet()).isFalse();
 
-        initQueryObjects(this, MOCKED_APPIUM_DRIVER);
+        initQueryObjects(this, MOCKED_CHROME_DRIVER);
 
         assertThat(empty).isNull();
         assertThat(valid.driverIsSet()).isTrue();
+    }
+    
+    @Test
+    public void assignDriverToClass() {
+        SomePageObject somePageObject = new SomePageObject();
+
+        assertThat(somePageObject.element.driverIsSet()).isFalse();
+        assertThat(somePageObject.anotherElement.driverIsSet()).isFalse();
+
+        initQueryObjects(somePageObject, MOCKED_CHROME_DRIVER);
+
+        assertThat(somePageObject.element.driverIsSet()).isTrue();
+        assertThat(somePageObject.anotherElement.driverIsSet()).isTrue();
     }
 }
