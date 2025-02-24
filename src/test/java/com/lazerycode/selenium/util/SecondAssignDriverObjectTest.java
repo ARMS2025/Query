@@ -26,7 +26,7 @@ public class SecondAssignDriverObjectTest {
     public SecondAssignDriverObjectTest() {
         Capabilities mockedRemoteWebDriverCapabilities = mock(Capabilities.class);
         when(mockedRemoteWebDriverCapabilities.getBrowserName()).thenReturn(BrowserType.GOOGLECHROME);
-        when(mockedRemoteWebDriverCapabilities.getCapability("automationName")).thenReturn(null);
+        when(mockedRemoteWebDriverCapabilities.getCapability("automationName")).thenReturn(Platform.YOSEMITE);
         when(MOCKED_CHROME_DRIVER.getCapabilities()).thenReturn(mockedRemoteWebDriverCapabilities);
 
         Capabilities mockedAppiumDriverCapabilities = mock(Capabilities.class);
